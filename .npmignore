@@ -1,0 +1,12 @@
+# Only dist/, README.md, LICENSE and package.json are published (see "files").
+# This file exists so npm never falls back to .gitignore, which ignores dist/.
+src/
+test/
+examples/
+coverage/
+bun.lock
+tsup.config.ts
+tsconfig.json
+tsconfig.test.json
+*.log
+.DS_Store
