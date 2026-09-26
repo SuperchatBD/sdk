@@ -97,6 +97,24 @@ export interface Payment {
    * the refund call.
    */
   refund_reason?: string;
+  /**
+   * Present on refund responses and `payment.refunded` webhook payloads.
+   */
+  refund?: PaymentRefund | null;
+}
+
+/** Details of a processed refund. */
+export interface PaymentRefund {
+  /** Gateway refund reference, or `null` when settled manually outside the gateway. */
+  id: string | null;
+  /**
+   * `true` when the underlying gateway does not support automated reversals
+   * (e.g. EPS / Bangladeshi Mobile Financial Services) and the funds must be
+   * settled to the customer manually.
+   */
+  requiresManualSettlement: boolean;
+  /** The reason provided for the refund. */
+  reason: string;
 }
 
 /** Parameters accepted by `superchat.payments.create()`. */

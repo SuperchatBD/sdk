@@ -97,7 +97,15 @@ the internal one (`created`, `processing`, `paid`, …). The API also returns le
 aliases (`checkout_url`, `platform_fee`, `platform_fee_rate`, `net_amount`) which remain typed for
 backwards compatibility.
 
-Only payments in the internal `paid` status can be refunded.
+Only payments in the internal `paid` status can be refunded. A refund debits your workspace
+earnings balance and returns the payment with an attached `refund` object (`PaymentRefund`):
+- `id`: Gateway refund identifier, or `null` for manual settlement.
+- `requiresManualSettlement`: `true` when the payment was settled via EPS / Bangladeshi Mobile
+  Financial Services (bKash/Nagad/Rocket), which do not support automated API reversals. In this case,
+  the merchant must disburse funds to the customer manually outside the platform.
+- `reason`: The refund reason string provided by the caller.
+
+Test mode payments cannot be refunded because no real money was collected.
 
 ### `superchat.account`
 

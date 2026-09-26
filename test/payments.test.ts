@@ -107,9 +107,20 @@ describe("payments.retrieve and payments.list", () => {
 });
 
 describe("payments.refund", () => {
-  test("sends the refund reason", async () => {
+  test("sends the refund reason and returns refund details", async () => {
+    const refundPayload = {
+      id: null,
+      requiresManualSettlement: true,
+      reason: "Customer requested cancellation",
+    };
     const { client, requests } = createTestClient({}, () =>
-      jsonResponse(samplePayment({ status: "refunded", rawStatus: "refunded" })),
+      jsonResponse(
+        samplePayment({
+          status: "refunded",
+          rawStatus: "refunded",
+          refund: refundPayload,
+        }),
+      ),
     );
 
     const payment = await client.payments.refund("pay_9f1c2d3e4b5a", { reason: "Customer requested cancellation" });
@@ -118,6 +129,7 @@ describe("payments.refund", () => {
     expect(requests[0]?.url).toBe("https://api.example.test/api/v1/payments/pay_9f1c2d3e4b5a/refund");
     expect(requests[0]?.body).toEqual({ reason: "Customer requested cancellation" });
     expect(payment.status).toBe("refunded");
+    expect(payment.refund).toEqual(refundPayload);
   });
 
   test("sends an empty body when no reason is given and no idempotency key by default", async () => {

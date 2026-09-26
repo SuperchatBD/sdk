@@ -44,6 +44,7 @@ export type {
   PaymentCustomer,
   PaymentCustomerInput,
   PaymentRawStatus,
+  PaymentRefund,
   PaymentStatus,
   RefundPaymentParams,
 } from "./types/payments";
